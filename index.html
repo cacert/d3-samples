@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<head>
+
+<body>
+<script>
+var color = d3.scale.category10();
+var canvas = d3.select("body").append("svg").attr("width",500).attr("height",500);
+d3.json("data/mydata.json",function(data){
+
+console.log(color)
+var treemap = d3.layout.treemap()
+	.size([300,300])
+	.nodes(data)
+	
+console.log(treemap)
+
+var cells = canvas.selectAll(".cell")
+	.data(treemap)
+	.enter()
+	.append("g")
+	.attr("class","cell")
+
+console.log(3)
+
+cells.append("rect")
+	.attr("x" , function (d){return d.x;})
+	.attr("y" , function (d){return d.y;})
+	.attr("width" , function (d){return d.dx;})
+	.attr("height" , function (d){return d.dy;})
+//	.attr("fill" , function (d){return d.children ? null : console.log(d.parent.name); d.children ? null : color(d.parent.name);})
+//	.attr("fill" , "kasim")
+	.attr("stroke" , "#f0f")
+
+console.log(4)
+	
+cells.append("text")
+	.attr("x" , function (d){return d.x + d.dx /2})
+	.attr("y" , function (d){return d.y + d.dy /2})
+	.attr("text" , function (d){return  d.children ? null : d.name;})
+
+console.log(5)
+})
+
+
+</script>
+</body>

@@ -1,0 +1,24 @@
+{
+    "name": "kasim",
+    "value": 100,
+    "children": [
+        {
+            "name": "ahmet",
+            "value": 50,
+            "children": [
+                {
+                    "name": "ahmet1",
+                    "value": 25
+                },
+                {
+                    "name": "ahmet2",
+                    "value": 25
+                },
+                {
+                    "name": "ahmet3",
+                    "value": 25
+                }
+            ]
+        }
+    ]
+}
