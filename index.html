@@ -1,48 +1,81 @@
-<!DOCTYPE html>
-<head>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<head>
+<!doctype html>
+<meta charset="utf-8">
 
-<body>
+<!-- load D3js -->
+<script src="http://d3js.org/d3.v3.js"></script>
+
+<!-- load D3plus after D3js -->
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+<!-- create container element for visualization -->
+<div id="kasim"></div>
+
 <script>
-var color = d3.scale.category10();
-var canvas = d3.select("body").append("svg").attr("width",500).attr("height",500);
-d3.json("data/mydata.json",function(data){
 
-console.log(color)
-var treemap = d3.layout.treemap()
-	.size([300,300])
-	.nodes(data)
+	d3.csv("data.csv", function(error, esb_data) {
+	  if (error) return console.error(error);
+	  
+	  // Coerce data values to be numeric
+	  esb_data.forEach(function(d) {
+	    d3.keys(d).forEach(function(k){
+	      if(k == "value"){
+	        d[k] = parseInt(d[k]);
+	      }
+	    })
+	  });
+	  
+	  generateVisualization(esb_data);
+	});
+
+	function generateVisualization(mydata){
 	
-console.log(treemap)
-
-var cells = canvas.selectAll(".cell")
-	.data(treemap)
-	.enter()
-	.append("g")
-	.attr("class","cell")
-
-console.log(3)
-
-cells.append("rect")
-	.attr("x" , function (d){return d.x;})
-	.attr("y" , function (d){return d.y;})
-	.attr("width" , function (d){return d.dx;})
-	.attr("height" , function (d){return d.dy;})
-//	.attr("fill" , function (d){return d.children ? null : console.log(d.parent.name); d.children ? null : color(d.parent.name);})
-//	.attr("fill" , "kasim")
-	.attr("stroke" , "#f0f")
-
-console.log(4)
-	
-cells.append("text")
-	.attr("x" , function (d){return d.x + d.dx /2})
-	.attr("y" , function (d){return d.y + d.dy /2})
-	.attr("text" , function (d){return  d.children ? null : d.name;})
-
-console.log(5)
-})
-
-
+		  var attributes = [
+		                    {"host": "Host1", "hex": "#CC0000"},
+		                    {"host": "Host2", "hex": "#00CC00"},
+		                    {"host": "Host3", "hex": "#0000CC"}
+		  ]
+		
+	var visualization = d3plus.viz()
+		.container("#kasim")
+		.data(mydata)
+		.type("tree_map")
+		.id([ "host", "service" ])
+		.size("value")
+		.time({
+			"value" : "date",
+			"solo" : "2012"
+		})
+		.attrs(attributes)
+    	.color("hex")
+		.tooltip({
+			"html" : "kasim sert"
+		})
+		.format({
+      		"text": function(text, key) {
+        	    if (text === "value") {
+		          return "Avg.Resp.Time";
+		        }
+ 		        else {
+ 		          return d3plus.string.title(text, key);
+ 		        }
+        
+      		},
+	      	"number": function(number, key) {
+	          var formatted = d3plus.number.format(number, key)
+	          console.log(formatted);
+	          if (key.key === "value") {
+	        	  console.log(key)
+	            return formatted + " ms"
+	          }
+	          else {
+	            return formatted
+	          }
+	          
+	        }
+		})
+		.draw()
+		$('rect.d3plus_data').on("click", function() {
+			console.log("Hello")
+		})
+	}
 </script>
-</body>

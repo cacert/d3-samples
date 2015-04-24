@@ -1,0 +1,11 @@
+host,service,value,date
+Host1,service1A,20,2012
+Host1,service1B,25,2012
+Host1,service1C,30,2012
+Host2,service2D,15,2012
+Host2,service2E,35,2012
+Host1,service1A,15,2011
+Host3,service3B,45,2011
+Host3,service3C,40,2011
+Host2,service2D,20,2011
+Host2,service2E,50,2011
