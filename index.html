@@ -1,5 +1,11 @@
 <!doctype html>
 <meta charset="utf-8">
+<!-- <!-- <style> --> 
+<!-- /* .d3plus_tooltip_container { */ -->
+<!-- /*     height: auto; */ -->
+<!-- /* } */ -->
+
+<!-- <!-- </style> --> 
 
 <!-- load D3js -->
 <script src="http://d3js.org/d3.v3.js"></script>
@@ -11,7 +17,6 @@
 <div id="kasim"></div>
 
 <script>
-
 	d3.csv("data.csv", function(error, esb_data) {
 	  if (error) return console.error(error);
 	  
@@ -21,61 +26,59 @@
 	      if(k == "value"){
 	        d[k] = parseInt(d[k]);
 	      }
+	      
 	    })
 	  });
-	  
-	  generateVisualization(esb_data);
+	  maxdate = d3.max(esb_data, function(d){return d.date});
+	  generateVisualization(esb_data,maxdate);
 	});
 
-	function generateVisualization(mydata){
+	function generateVisualization(mydata,maxdate){
 	
-		  var attributes = [
-		                    {"host": "Host1", "hex": "#CC0000"},
-		                    {"host": "Host2", "hex": "#00CC00"},
-		                    {"host": "Host3", "hex": "#0000CC"}
-		  ]
-		
-	var visualization = d3plus.viz()
-		.container("#kasim")
-		.data(mydata)
-		.type("tree_map")
-		.id([ "host", "service" ])
-		.size("value")
-		.time({
-			"value" : "date",
-			"solo" : "2012"
-		})
-		.attrs(attributes)
-    	.color("hex")
-		.tooltip({
-			"html" : "kasim sert"
-		})
-		.format({
-      		"text": function(text, key) {
-        	    if (text === "value") {
-		          return "Avg.Resp.Time";
+		var visualization = d3plus.viz()
+			.container("#kasim")
+			.data(mydata)
+			.type("tree_map")
+			.id([ "host", "service" ])
+			.size("value")
+			.title("Log Analysis Visualization")
+			.time({
+				"value" : "date",
+	  			"solo" : maxdate
+			})
+			.tooltip({
+				"share":false,
+				"html" : "Summary information about the Service, and may be some links to the external applications",
+				"font": {size:"auto"}
+			})
+			.format({
+	      		"text": function(text, key) {
+	        	    if (text === "value") {
+			          return "Avg.Resp.Time";
+			        }
+	 		        else {
+	 		          return d3plus.string.title(text, key);
+	 		        }
+	        
+	      		},
+		      	"number": function(number, key) {
+		          var formatted = d3plus.number.format(number, key)
+		          if (key.key === "value") {
+		        	return formatted + " ms"
+		          }
+		          else {
+		            return formatted
+		          }
+		          
 		        }
- 		        else {
- 		          return d3plus.string.title(text, key);
- 		        }
-        
-      		},
-	      	"number": function(number, key) {
-	          var formatted = d3plus.number.format(number, key)
-	          console.log(formatted);
-	          if (key.key === "value") {
-	        	  console.log(key)
-	            return formatted + " ms"
-	          }
-	          else {
-	            return formatted
-	          }
-	          
-	        }
-		})
-		.draw()
-		$('rect.d3plus_data').on("click", function() {
-			console.log("Hello")
-		})
+			})
+			.color({
+	      		"range": [ "red" , "yellow" ],
+	      		"value": "value"
+	    	})
+			.draw()
+			$('rect.d3plus_data').on("click", function() {
+				console.log("Hello")
+			})
 	}
 </script>
