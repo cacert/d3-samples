@@ -1,0 +1,84 @@
+#selecting element
+
+var nodes = [
+    {"name": "John Smith", "value": 1},
+    {"name": "Paul Logan", "value": 30},
+    {"name": "Mary Dunn", "value": 11},
+    {"name": "Carla Brown", "value": 24},
+    {"name": "Ted Brown", "value": 5},
+    {"name": "Ted Black", "value": 35},
+    {"name": "Ted Green", "value": 1},
+    {"name": "Ted White", "value": 5},
+    {"name": "Paul Black", "value": 30},
+    {"name": "Paul White", "value": 10},
+    {"name": "Paul Brown", "value": 15},
+    {"name": "Mat Black", "value": 30},
+    {"name": "Mat White", "value": 3},
+    {"name": "Mat Brown", "value": 15},
+    {"name": "Jim Black", "value": 30},
+    {"name": "Jim White", "value": 4},
+    {"name": "Jim Brown", "value": 15},
+    {"name": "Tim Black", "value": 30},
+    {"name": "Tim White", "value": 2},
+    {"name": "Tim Brown", "value": 20},
+    {"name": "Mary Black", "value": 30}
+    
+  ];
+  
+var links = [
+    // first hop
+    {"source": "Paul Logan", "target": "John Smith"},
+    {"source": "Mary Dunn", "target": "John Smith"},
+    {"source": "Carla Brown", "target": "John Smith"},
+    {"source": "Ted Brown", "target": "John Smith"},
+    {"source": "Ted Black", "target": "John Smith"},
+    {"source": "Ted Green", "target": "John Smith"},
+    {"source": "Ted White", "target": "John Smith"},
+    {"source": "Paul White", "target": "John Smith"},
+    {"source": "Paul Black", "target": "John Smith"},
+    {"source": "Paul Brown", "target": "John Smith"},
+    {"source": "Mat White", "target": "John Smith"},
+    {"source": "Mat Black", "target": "John Smith"},
+    {"source": "Mat Brown", "target": "John Smith"},
+    {"source": "Jim White", "target": "John Smith"},
+    {"source": "Jim Black", "target": "John Smith"},
+    {"source": "Jim Brown", "target": "John Smith"},
+    {"source": "Tim White", "target": "John Smith"},
+    {"source": "Tim Black", "target": "John Smith"},
+    {"source": "Tim Brown", "target": "John Smith"},
+    {"source": "Mary White", "target": "John Smith"}
+    , // 2nd hop
+    {"source": "Matt Newman", "target": "Paul Brown", "strength" : "co-author"},
+    {"source": "Matt Newman", "target": "Ted Brown"},
+    {"source": "Jay Lyst", "target": "Ted Black"},
+    {"source": "Jay Lyst", "target": "Carla Brown"},
+    {"source": "Jay Lyst", "target": "Paul Black"},
+    {"source": "Robert Conrad", "target": "Tim Brown"},
+    {"source": "Robert Conrad", "target": "Jim Brown"},
+    {"source": "Robert Conrad", "target": "Mat Brown"},
+    {"source": "Mary Green", "target": "Ted White"},
+    {"source": "Mary Green", "target": "Paul White"},
+    {"source": "Mary Green", "target": "Jim Brown"},
+    {"source": "Wayne Heck", "target": "Jim White"},
+    {"source": "Wayne Heck", "target": "Ted White"},
+    {"source": "Trevis Donny", "target": "Paul Black"},
+    {"source": "Trevis Donny", "target": "Carla Brown"}
+    
+  ];
+
+var viz = d3plus.viz()
+    .container("#viz")
+    .type("rings")
+    .data(nodes)
+    .id("name")
+    .width(1000)
+    .height(700)
+    .legend(false)
+    .size("value")
+    .edges(links)
+    .focus("John Smith")
+    .draw();
+
+d3.select("#d3plus_label_John_Smith_0_rect")
+    .style("fill","yellow")
+    .attr("transform","translate(30,0");
