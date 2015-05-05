@@ -5,6 +5,7 @@
     <title>ESB Log Analysis</title>
     <script src="http://d3js.org/d3.v3.js"></script>
 	<script src="http://www.d3plus.org/js/d3plus.js"></script>
+	<script src="./mycolor.js"></script>
     <style type="text/css">
         body {
             overflow: hidden;
@@ -68,9 +69,9 @@
             cursor: pointer
         }
         .foreignObject {
-            font: 9px sans-serif;
+            font: 12px sans-serif;
             text-overflow: ellipsis;
-            text-align: left;
+            text-align: center;
             word-wrap: break-word;
         }
         
@@ -149,8 +150,8 @@
                    {"year": 1995, "name":"gamma", "value": 40}
                  ]
 
-    var chartWidth = 550;
-    var chartHeight = 550;
+    var chartWidth = 850;
+    var chartHeight = 650;
     var xscale = d3.scale.linear().range([0, chartWidth]);
     var yscale = d3.scale.linear().range([0, chartHeight]);
     var color = d3.scale.category10();
@@ -159,7 +160,7 @@
     var transitionDuration = 500;
     var root;
     var node;
-
+    
     var treemap = d3.layout.treemap()
         .round(false)
         .size([chartWidth, chartHeight])
@@ -170,6 +171,12 @@
         	return d.rt;
         });
 
+    var color = d3.scale.ordinal().domain(treemap.nodes).range(colorbrewer.RdYlBu[9]);
+    
+    /* var color   = d3.scale.category20c()
+                .domain([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
+                         11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+     */
     function comparator(a, b) {
     	 aindex =  a.index== null ? a.parent.index :a.index;
     	bindex =  b.index== null ? b.parent.index :b.index;
@@ -217,7 +224,7 @@
         .attr("mode", "normal");
 
 
-    d3.json("flare.json", function(data) {
+    d3.json("treemap.json", function(data) {
         node = root = data;
         var nodes = treemap.nodes(root);
 
@@ -237,7 +244,8 @@
             .append("g")
             .attr("class", "cell parent")
             .on("click", function(d) {
-                zoom(d);
+                zoom(node === root ? d : root);
+            	//zoom(d);
             });
         parentEnterTransition.append("rect")
             .attr("width", function(d) {
@@ -292,7 +300,7 @@
                 zoom(node === d.parent ? root : d.parent);
             })
             .on("mouseover", function(d) {
-                this.parentNode.appendChild(this); // workaround for bringing elements to the front (ie z-index)
+                //this.parentNode.appendChild(this); // workaround for bringing elements to the front (ie z-index)
                 d3.select(this)
                     .attr("filter", "url(#outerDropShadow)")
                     .select(".background")
@@ -376,16 +384,28 @@
     	 //console.log(d);
     	var xPosition = d3.event.pageX + 5;
     	  var yPosition = d3.event.pageY + 5;
-
+    	  d3.select("#tooltip #revenue #d3plus")
+          .remove();
+    	  
+    	  if(yPosition>200)
+    		  yPosition=yPosition-200;
     	  d3.select("#tooltip")
     	    .style("left", xPosition + "px")
     	    .style("top", yPosition + "px");
     	  d3.select("#tooltip #heading")
     	    .text(d.name);
     	  d3.select("#tooltip #percentage")
-    	    .text("Percentage : " + d.rt);
+    	    .text("Percentage : " + d.rt + '%');
     	  d3.select("#tooltip").classed("hidden", false);
-    	  drawLine(d);
+    	  
+    	  if(node.name === d.parent.name){
+    	  		drawLine(d);
+    	  }
+    	  else {
+        	d3.select("#tooltip")
+           		.style("width", "220px")
+      	    	.style("height", "100px");
+    	  }
     }
     function mouseOut(){
     	d3.select("#tooltip").classed("hidden", true);
@@ -399,18 +419,24 @@
     	        }
     	        return false;
     	    });
-
-    		console.log(data);
+			
+    	    d3.select("#tooltip")
+	       		.style("width", "420px")
+	  	    	.style("height", "400px");
     	
   			var visualization = d3plus.viz()
-     	    .container("#tooltip")  // container DIV to hold the visualization
+     	    .container("#tooltip #revenue")  // container DIV to hold the visualization
      	    .data(data)  // data to use with the visualization
      	    .type("line")       // visualization type
      	    .id("service")         // key for which our data is unique on
      	    .text(service.name)       // key to use for display text
-     	    .y("value")         // key to use for y-axis
-     	    .x(function(d){console.log(d); return d["date"].getDay();})
-     	   	.time("date")          // key to use for x-axis
+     	    .y({"label": "Avg Response Time",
+     	   		"value":"value"	
+     	   	})         // key to use for y-axis
+     	   	.x({"label": " Date ",
+     	   		"value":"date"	
+     	   	})
+     	    .time("date")          // key to use for x-axis
      	    .draw()             // finally, draw the visualization!
     	  
     }
