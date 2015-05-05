@@ -1,0 +1,72 @@
+{
+    "id": 1,
+    "name": "ESB Hosts",
+    "children": [
+        {
+            "id": 2,
+            "name": "Host1",
+            "index": 1,
+            "children": [
+                {
+                    "id": 3,
+                    "name": "Service1A",
+                    "rt": "10.35"
+                },
+                {
+                    "id": 4,
+                    "name": "Service1B",
+                    "rt": "1.35"
+                },
+                {
+                    "id": 14,
+                    "name": "Service1C",
+                    "rt": "12.35"
+                },
+                {
+                    "id": 24,
+                    "name": "Service1D",
+                    "rt": "13.35"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Host2",
+            "index": 2,
+            "children": [
+                {
+                    "id": 6,
+                    "name": "Service2A",
+                    "rt": "13.35"
+                },
+                {
+                    "id": 7,
+                    "name": "Service2B",
+                    "rt": "13.35"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Host3",
+            "index": 3,
+            "children": [
+                {
+                    "id": 9,
+                    "name": "Service3A",
+                    "rt": "1.35"
+                },
+                {
+                    "id": 10,
+                    "name": "Service3B",
+                    "rt": "12.35"
+                },
+                {
+                    "id": 11,
+                    "name": "Service3C",
+                    "rt": "10.35"
+                }
+            ]
+        }
+    ]
+}
